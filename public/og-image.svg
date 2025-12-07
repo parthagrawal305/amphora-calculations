@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f5e8ff"/>
+      <stop offset="50%" stop-color="#e5d4ff"/>
+      <stop offset="100%" stop-color="#d7c2ff"/>
+    </linearGradient>
+
+    <!-- Brand gradient -->
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#9333ea"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+
+    <!-- Subtle grid pattern -->
+    <pattern id="grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#c4aef7" stroke-opacity="0.25" stroke-width="1"/>
+    </pattern>
+
+    <!-- Card blur -->
+    <filter id="softBlur" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <!-- Grid overlay -->
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.55"/>
+
+  <!-- Logo mark -->
+  <g transform="translate(80, 80)">
+    <defs>
+      <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#9333ea"/>
+        <stop offset="100%" stop-color="#3b82f6"/>
+      </linearGradient>
+    </defs>
+    <path d="M22 0C9 0 0 9.5 0 22.5C0 35 9 44 21 44C31.5 44 40 36 44 25.5C47.5 16 44 8 38.5 4.5C33.5 1.5 28 0 22 0Z" fill="url(#logoGrad)"/>
+    <circle cx="45" cy="40" r="7" fill="url(#logoGrad)"/>
+  </g>
+
+  <!-- Domain pill -->
+  <g transform="translate(870, 70)">
+    <rect x="0" y="0" width="250" height="56" rx="28" fill="rgba(255,255,255,0.32)" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+    <text x="28" y="35" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#4b2bb8">
+      amphora.ad
+    </text>
+  </g>
+
+  <!-- Left copy block -->
+  <g transform="translate(80, 240)">
+    <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="76" font-weight="700" fill="#111827">
+      Amphora Ads
+    </text>
+    <text x="0" y="70" font-family="system-ui, -apple-system, sans-serif" font-size="40" fill="#4b5563">
+      Earnings <tspan fill="url(#brandGrad)">reimagined</tspan>
+    </text>
+    <text x="0" y="120" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#6b7280">
+      Turn AI conversations into native ad revenue.
+    </text>
+  </g>
+
+  <!-- Right blurred chat-style card -->
+  <g transform="translate(690, 170)">
+    <!-- Soft glow -->
+    <rect x="10" y="10" width="420" height="280" rx="32" fill="rgba(255,255,255,0.55)" filter="url(#softBlur)"/>
+    <!-- Foreground card -->
+    <rect x="0" y="0" width="420" height="280" rx="28" fill="rgba(255,255,255,0.86)" stroke="rgba(255,255,255,0.9)" stroke-width="1.2"/>
+
+    <!-- Mini metric rows -->
+    <g transform="translate(30, 40)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="#6b7280">
+        Monthly net profit
+      </text>
+      <text x="0" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="700" fill="url(#brandGrad)">
+        $48.3k
+      </text>
+    </g>
+
+    <g transform="translate(30, 110)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#9ca3af">
+        AI costs
+      </text>
+      <text x="0" y="24" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="#111827">
+        $18.4k
+      </text>
+    </g>
+
+    <g transform="translate(220, 110)">
+      <text x="0" y="0" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#9ca3af">
+        Ad revenue
+      </text>
+      <text x="0" y="24" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="600" fill="#111827">
+        $66.7k
+      </text>
+    </g>
+
+    <!-- ROI pill -->
+    <g transform="translate(30, 185)">
+      <rect x="0" y="0" width="150" height="40" rx="20" fill="rgba(147,51,234,0.1)" stroke="rgba(147,51,234,0.5)" stroke-width="1"/>
+      <text x="18" y="26" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#7c3aed">
+        ROI 262%
+      </text>
+    </g>
+
+    <!-- Bottom hint -->
+    <g transform="translate(30, 235)">
+      <text x="0" y="0" font-family="monospace" font-size="13" fill="#9ca3af">
+        // Native ads woven into every conversation
+      </text>
+    </g>
+  </g>
+</svg>
+
