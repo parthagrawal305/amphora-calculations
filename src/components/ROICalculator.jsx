@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Info, TrendingUp, Server, Activity, Zap, DollarSign, HelpCircle, AlertCircle, CheckCircle2, Code2 } from 'lucide-react';
+import { Info, TrendingUp, Server, Activity, Zap, DollarSign, HelpCircle, AlertCircle, CheckCircle2, Code2, Sparkles } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const ROICalculator = () => {
   const { theme } = useTheme();
@@ -156,224 +157,307 @@ const ROICalculator = () => {
     });
   };
 
+  // Animation variants for premium theme
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
+  const scaleIn = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      scale: 1,
+      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
   return (
-    <div className={`w-full max-w-7xl mx-auto bg-white text-gray-900 transition-all duration-300 ${
-      theme === 'apple' ? 'font-sans' : 'font-sans'
+    <div className={`w-full max-w-7xl mx-auto transition-all duration-300 ${
+      theme === 'premium' 
+        ? 'bg-gradient-to-br from-slate-50 via-purple-50/30 to-pink-50/30 min-h-screen' 
+        : 'bg-white text-gray-900'
     }`}>
       
       {/* Header Section */}
-      <div className={`px-4 sm:px-6 md:px-8 transition-all duration-300 ${
-        theme === 'apple' 
-          ? 'pt-12 sm:pt-16 md:pt-20 pb-8 sm:pb-12' 
-          : 'pt-6 sm:pt-8 pb-4 sm:pb-6'
-      }`}>
-        <div className={`flex items-center gap-3 mb-2 ${
-          theme === 'apple' ? 'mb-4' : 'mb-2'
-        }`}>
-          <h1 className={`font-bold transition-all duration-300 ${
-            theme === 'apple'
-              ? 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-gray-900 tracking-tight'
-              : 'text-2xl sm:text-3xl md:text-4xl bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 bg-clip-text text-transparent'
-          }`}>
+      {theme === 'premium' ? (
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+          className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-8 sm:pt-12 md:pt-16 lg:pt-20 xl:pt-24 pb-8 sm:pb-12 md:pb-16"
+        >
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-5 md:mb-6">
+            <motion.div
+              initial={{ rotate: -180, scale: 0 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6, type: "spring" }}
+              className="flex-shrink-0"
+            >
+              <Sparkles className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-500" />
+            </motion.div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black tracking-tight bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent leading-tight">
+              Earnings Calculator
+            </h1>
+          </div>
+          <motion.p 
+            variants={fadeInUp}
+            className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-700 leading-relaxed max-w-3xl"
+          >
+            Estimate how native ads offset your AI inference costs
+          </motion.p>
+        </motion.div>
+      ) : (
+      <div className="px-4 sm:px-6 md:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6">
+        <div className="flex items-center gap-3 mb-2">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 via-purple-500 to-blue-600 bg-clip-text text-transparent">
             Earnings Calculator
           </h1>
-          {theme !== 'apple' && (
-            <span className="text-purple-600 font-mono text-lg sm:text-xl md:text-2xl">&lt;/&gt;</span>
-          )}
+          <span className="text-purple-600 font-mono text-lg sm:text-xl md:text-2xl">&lt;/&gt;</span>
         </div>
-        <p className={`transition-all duration-300 ${
-          theme === 'apple'
-            ? 'text-gray-600 text-lg sm:text-xl md:text-2xl leading-relaxed'
-            : 'text-gray-600 text-sm sm:text-base'
-        }`}>
-          {theme === 'apple' ? (
-            <>Estimate how native ads offset your AI inference costs</>
-          ) : (
-            <>
-              Estimate how native ads offset your AI inference costs
-              <span className="ml-2 text-xs text-gray-400 font-mono">// AI unit economics, at a glance</span>
-            </>
-          )}
+        <p className="text-gray-600 text-sm sm:text-base">
+          Estimate how native ads offset your AI inference costs
+          <span className="ml-2 text-xs text-gray-400 font-mono">// AI unit economics, at a glance</span>
         </p>
       </div>
+      )}
 
       {/* HERO SECTION: Key Results First */}
-      <div className={`px-4 sm:px-6 md:px-8 transition-all duration-300 ${
-        theme === 'apple'
-          ? 'mb-12 sm:mb-16 md:mb-20'
-          : 'mb-6 sm:mb-8 sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-gray-100 lg:static lg:border-b-0'
-      }`}>
-        <div className={`transition-all duration-300 ${
-          theme === 'apple'
-            ? `rounded-3xl p-12 sm:p-16 md:p-20 border ${
-                results.netProfit > 0
-                  ? 'bg-gray-50 border-gray-100 shadow-sm'
-                  : 'bg-gray-50 border-gray-100 shadow-sm'
-              }`
-            : `rounded-2xl p-6 sm:p-8 border-2 ${
-                results.netProfit > 0 
-                  ? 'bg-gradient-to-br from-purple-50 via-blue-50 to-purple-50 border-purple-200 shadow-lg shadow-purple-100/50' 
-                  : 'bg-gradient-to-br from-red-50 via-orange-50 to-red-50 border-red-200 shadow-lg shadow-red-100/50'
-              }`
-        }`}>
-          <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between transition-all duration-300 ${
-            theme === 'apple' ? 'gap-8 sm:gap-12' : 'gap-4 sm:gap-6'
-          }`}>
-            <div className="flex-1">
-              <div className={`flex items-center gap-2 transition-all duration-300 ${
-                theme === 'apple' ? 'mb-6' : 'mb-3'
-              }`}>
-                {results.netProfit > 0 ? (
-                  <>
-                    <CheckCircle2 className={`transition-colors duration-300 ${
-                      theme === 'apple' ? 'w-6 h-6 text-gray-900' : 'w-5 h-5 text-purple-600'
-                    }`} />
-                    <span className={`font-semibold transition-all duration-300 ${
-                      theme === 'apple' 
-                        ? 'text-base sm:text-lg text-gray-900' 
-                        : 'text-sm text-purple-700'
-                    }`}>
-                      Profitable
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <AlertCircle className={`transition-colors duration-300 ${
-                      theme === 'apple' ? 'w-6 h-6 text-gray-900' : 'w-5 h-5 text-red-600'
-                    }`} />
-                    <span className={`font-semibold transition-all duration-300 ${
-                      theme === 'apple' 
-                        ? 'text-base sm:text-lg text-gray-900' 
-                        : 'text-sm text-red-700'
-                    }`}>
-                      Not Profitable
-                    </span>
-                  </>
-                )}
-              </div>
-              <div className={`font-bold tracking-tight transition-all duration-300 mb-2 ${
-                theme === 'apple'
-                  ? `text-6xl sm:text-7xl md:text-8xl lg:text-9xl ${
-                      results.netProfit > 0 ? 'text-gray-900' : 'text-gray-900'
-                    }`
-                  : `text-4xl sm:text-5xl md:text-6xl lg:text-7xl ${
-                      results.netProfit > 0 
-                        ? 'bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent' 
-                        : 'text-red-600'
-                    }`
-              }`}>
-                {fmtCurrency(results.netProfit)}
-              </div>
-              <p className={`transition-all duration-300 ${
-                theme === 'apple'
-                  ? 'text-gray-600 text-xl sm:text-2xl md:text-3xl mb-2'
-                  : 'text-sm sm:text-base text-gray-600 mb-1'
-              }`}>
-                Net profit per month
-              </p>
-              {theme !== 'apple' && (
-                <p className="text-xs text-gray-400 font-mono mb-4">// revenue - inferenceCost</p>
-              )}
-              
-              {/* Quick Stats Row */}
-              <div className={`grid grid-cols-2 sm:grid-cols-3 transition-all duration-300 pt-4 ${
-                theme === 'apple'
-                  ? 'gap-6 sm:gap-8 border-t border-gray-200'
-                  : 'gap-3 sm:gap-4 border-t border-gray-200/50'
-              }`}>
-                <div>
-                  <p className={`transition-all duration-300 mb-1 ${
-                    theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-500'
-                  }`}>
-                    ROI
-                  </p>
-                  <p className={`font-bold transition-all duration-300 ${
-                    theme === 'apple'
-                      ? `text-3xl sm:text-4xl ${
-                          results.netProfit > 0 ? 'text-gray-900' : 'text-gray-900'
-                        }`
-                      : `text-xl sm:text-2xl ${
-                          results.netProfit > 0 
-                            ? 'bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent' 
-                            : 'text-red-600'
-                        }`
-                  }`}>
-                    {results.roi > 0 ? '+' : ''}{results.roi.toFixed(0)}%
-                  </p>
+      {theme === 'premium' ? (
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={scaleIn}
+          className="px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 mb-8 sm:mb-12 md:mb-16 lg:mb-20 xl:mb-24"
+        >
+          <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden">
+            {/* Animated gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-pink-500/20 to-orange-500/20 animate-gradient-xy"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-purple-500/10 to-pink-500/10"></div>
+            
+            {/* Glassmorphism card */}
+            <div className="relative backdrop-blur-xl bg-white/70 border border-white/20 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-12 xl:p-16 2xl:p-20 shadow-2xl">
+              {/* Mobile & Tablet: Vertical Stack | Desktop: Side-by-side */}
+              <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16">
+                {/* Left: Net Profit Section */}
+                <div className="flex-1 w-full lg:max-w-[60%] xl:max-w-[55%]">
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1, duration: 0.6 }}
+                    className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6 md:mb-8"
+                  >
+                    {results.netProfit > 0 ? (
+                      <>
+                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 animate-pulse flex-shrink-0"></div>
+                        <span className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                          Profitable
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-gradient-to-r from-red-400 to-orange-500 animate-pulse flex-shrink-0"></div>
+                        <span className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-900">
+                          Not Profitable
+                        </span>
+                      </>
+                    )}
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.3, duration: 0.8, type: "spring", stiffness: 100 }}
+                    className="font-black tracking-tight mb-3 sm:mb-4 md:mb-5 lg:mb-6 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-[10rem] leading-none bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent break-words"
+                  >
+                    {fmtCurrency(results.netProfit)}
+                  </motion.div>
+                  <motion.p 
+                    variants={fadeInUp}
+                    className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-700 mb-0 lg:mb-0 font-medium"
+                  >
+                    Net profit per month
+                  </motion.p>
                 </div>
-                <div>
-                  <p className={`transition-all duration-300 mb-1 ${
-                    theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-500'
-                  }`}>
-                    Revenue
-                  </p>
-                  <p className={`font-bold text-gray-900 transition-all duration-300 ${
-                    theme === 'apple' ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl'
-                  }`}>
-                    {fmtCurrency(results.totalRevenue)}
-                  </p>
+
+                {/* Right: Stats Section - Horizontal on mobile/tablet, Vertical on desktop */}
+                <motion.div 
+                  variants={fadeInUp}
+                  className="w-full lg:w-auto lg:flex-shrink-0 lg:min-w-[280px] xl:min-w-[320px]"
+                >
+                  {/* Mobile/Tablet: Horizontal Grid - stays horizontal until desktop */}
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 pt-6 sm:pt-8 border-t border-white/30 lg:hidden">
+                    <div className="text-center">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">ROI</p>
+                      <p className="text-xl sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent break-words leading-tight">
+                        {results.roi > 0 ? '+' : ''}{results.roi.toFixed(0)}%
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">Revenue</p>
+                      <p className="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 break-words leading-tight">
+                        {fmtCurrency(results.totalRevenue)}
+                      </p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs sm:text-sm text-gray-600 mb-1 sm:mb-2">Costs</p>
+                      <p className="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 break-words leading-tight">
+                        {fmtCurrency(results.inferenceCost)}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Desktop: Vertical Stack with left border */}
+                  <div className="hidden lg:flex flex-col gap-5 xl:gap-6 2xl:gap-8 pt-0 border-t-0 border-l border-white/30 pl-6 xl:pl-8 2xl:pl-12">
+                    <div>
+                      <p className="text-xs xl:text-sm 2xl:text-base text-gray-600 mb-1.5 xl:mb-2">ROI</p>
+                      <p className="text-2xl xl:text-3xl 2xl:text-4xl font-black bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent break-words">
+                        {results.roi > 0 ? '+' : ''}{results.roi.toFixed(0)}%
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs xl:text-sm 2xl:text-base text-gray-600 mb-1.5 xl:mb-2">Revenue</p>
+                      <p className="text-2xl xl:text-3xl 2xl:text-4xl font-black text-gray-900 break-words">
+                        {fmtCurrency(results.totalRevenue)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs xl:text-sm 2xl:text-base text-gray-600 mb-1.5 xl:mb-2">Costs</p>
+                      <p className="text-2xl xl:text-3xl 2xl:text-4xl font-black text-gray-900 break-words">
+                        {fmtCurrency(results.inferenceCost)}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      ) : (
+        <div className="px-4 sm:px-6 md:px-8 mb-6 sm:mb-8 sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-gray-100 lg:static lg:border-b-0">
+          <div className="rounded-2xl p-4 sm:p-6 md:p-8 border-2 bg-gradient-to-br from-purple-50 via-blue-50 to-purple-50 border-purple-200 shadow-lg shadow-purple-100/50">
+            {/* Mobile & Tablet: Vertical Stack | Desktop: Side-by-side */}
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 sm:gap-6 lg:gap-8 xl:gap-12">
+              {/* Left: Net Profit Section */}
+              <div className="flex-1 w-full lg:max-w-[60%] xl:max-w-[55%]">
+                <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                  {results.netProfit > 0 ? (
+                    <>
+                      <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-purple-700 font-semibold">Profitable</span>
+                    </>
+                  ) : (
+                    <>
+                      <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-red-700 font-semibold">Not Profitable</span>
+                    </>
+                  )}
                 </div>
-                <div className="col-span-2 sm:col-span-1">
-                  <p className={`transition-all duration-300 mb-1 ${
-                    theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-500'
-                  }`}>
-                    Costs
-                  </p>
-                  <p className={`font-bold text-gray-900 transition-all duration-300 ${
-                    theme === 'apple' ? 'text-3xl sm:text-4xl' : 'text-xl sm:text-2xl'
-                  }`}>
-                    {fmtCurrency(results.inferenceCost)}
-                  </p>
+                <div className="font-bold tracking-tight mb-2 text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent break-words">
+                  {fmtCurrency(results.netProfit)}
+                </div>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600 mb-1">Net profit per month</p>
+                <p className="text-xs text-gray-400 font-mono mb-0 lg:mb-0 hidden sm:block lg:hidden">// revenue - inferenceCost</p>
+              </div>
+
+              {/* Right: Stats Section - Horizontal on mobile/tablet, Vertical on desktop */}
+              <div className="w-full lg:w-auto lg:flex-shrink-0 lg:min-w-[220px] xl:min-w-[260px]">
+                {/* Mobile/Tablet: Horizontal Grid - stays horizontal until desktop */}
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 pt-3 sm:pt-4 border-t border-gray-200/50 lg:hidden">
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 mb-0.5 sm:mb-1">ROI</p>
+                    <p className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent break-words leading-tight">
+                      {results.roi > 0 ? '+' : ''}{results.roi.toFixed(0)}%
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 mb-0.5 sm:mb-1">Revenue</p>
+                    <p className="text-base sm:text-lg md:text-xl font-bold text-gray-900 break-words leading-tight">
+                      {fmtCurrency(results.totalRevenue)}
+                    </p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-xs text-gray-500 mb-0.5 sm:mb-1">Costs</p>
+                    <p className="text-base sm:text-lg md:text-xl font-bold text-gray-900 break-words leading-tight">
+                      {fmtCurrency(results.inferenceCost)}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Desktop: Vertical Stack with left border */}
+                <div className="hidden lg:flex flex-col gap-4 xl:gap-5 2xl:gap-6 pt-0 border-t-0 border-l border-gray-200/50 pl-5 xl:pl-6 2xl:pl-8">
+                  <div>
+                    <p className="text-xs xl:text-sm text-gray-500 mb-1">ROI</p>
+                    <p className="text-xl xl:text-2xl 2xl:text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent break-words">
+                      {results.roi > 0 ? '+' : ''}{results.roi.toFixed(0)}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs xl:text-sm text-gray-500 mb-1">Revenue</p>
+                    <p className="text-xl xl:text-2xl 2xl:text-3xl font-bold text-gray-900 break-words">
+                      {fmtCurrency(results.totalRevenue)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs xl:text-sm text-gray-500 mb-1">Costs</p>
+                    <p className="text-xl xl:text-2xl 2xl:text-3xl font-bold text-gray-900 break-words">
+                      {fmtCurrency(results.inferenceCost)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content: Single Column on Mobile, Two Column on Desktop */}
-      <div className={`px-4 sm:px-6 md:px-8 transition-all duration-300 ${
-        theme === 'apple' ? 'pb-16 sm:pb-20' : 'pb-8 sm:pb-10'
+      <div className={`px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 transition-all duration-300 ${
+        theme === 'premium' ? 'pb-12 sm:pb-16 md:pb-20 lg:pb-24' : 'pb-8 sm:pb-10'
       }`}>
         <div className={`grid grid-cols-1 lg:grid-cols-3 transition-all duration-300 ${
-          theme === 'apple' ? 'gap-8 lg:gap-12' : 'gap-6 lg:gap-8'
+          theme === 'premium' ? 'gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16' : 'gap-6 lg:gap-8'
         }`}>
           
           {/* LEFT: Inputs Section - Sticky on Desktop */}
           <div className={`lg:col-span-2 transition-all duration-300 ${
-            theme === 'apple' ? 'space-y-8 sm:space-y-12' : 'space-y-4 sm:space-y-6'
+            theme === 'premium' ? 'space-y-6 sm:space-y-8 md:space-y-10 lg:space-y-12' : 'space-y-4 sm:space-y-6'
           }`}>
           
             {/* Section 1: Traffic & Usage */}
             <div className={`bg-white rounded-xl border transition-all duration-300 ${
-              theme === 'apple'
-                ? 'border-gray-100 shadow-sm'
+              theme === 'premium'
+                ? 'border-gray-100 shadow-sm rounded-2xl'
                 : 'border-gray-200 shadow-sm'
             }`}>
-              <div className={`px-4 sm:px-5 py-3 sm:py-4 border-b transition-all duration-300 ${
-                theme === 'apple'
+              <div className={`px-4 sm:px-5 md:px-6 py-3 sm:py-4 md:py-5 border-b transition-all duration-300 ${
+                theme === 'premium'
                   ? 'border-gray-100 bg-white'
                   : 'border-gray-100 bg-gray-50/50'
               }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Activity className={`transition-colors duration-300 ${
-                      theme === 'apple' ? 'w-5 h-5 text-gray-900' : 'w-4 h-4 text-purple-600'
+                      theme === 'premium' ? 'w-4 h-4 sm:w-5 sm:h-5 text-gray-900' : 'w-4 h-4 text-purple-600'
                     }`} />
                     <h3 className={`font-semibold text-gray-900 transition-all duration-300 ${
-                      theme === 'apple' ? 'text-lg sm:text-xl' : 'text-sm sm:text-base'
+                      theme === 'premium' ? 'text-base sm:text-lg md:text-xl' : 'text-sm sm:text-base'
                     }`}>
                       Traffic & Usage
                     </h3>
                   </div>
-                  {theme !== 'apple' && (
-                    <span className="text-xs text-gray-400 font-mono">const traffic</span>
+                  {theme !== 'premium' && (
+                  <span className="text-xs text-gray-400 font-mono hidden sm:inline">const traffic</span>
                   )}
                 </div>
               </div>
               
-              <div className={`p-4 sm:p-5 transition-all duration-300 ${
-                theme === 'apple' ? 'space-y-6 sm:space-y-8' : 'space-y-4'
+              <div className={`p-4 sm:p-5 md:p-6 transition-all duration-300 ${
+                theme === 'premium' ? 'space-y-5 sm:space-y-6 md:space-y-8' : 'space-y-4'
               }`}>
               <InputGroup 
                 theme={theme}
@@ -410,33 +494,33 @@ const ROICalculator = () => {
 
             {/* Section 2: Costs */}
             <div className={`bg-white rounded-xl border transition-all duration-300 ${
-              theme === 'apple'
-                ? 'border-gray-100 shadow-sm'
+              theme === 'premium'
+                ? 'border-gray-100 shadow-sm rounded-2xl'
                 : 'border-gray-200 shadow-sm'
             }`}>
-              <div className={`px-4 sm:px-5 py-3 sm:py-4 border-b transition-all duration-300 ${
-                theme === 'apple'
+              <div className={`px-4 sm:px-5 md:px-6 py-3 sm:py-4 md:py-5 border-b transition-all duration-300 ${
+                theme === 'premium'
                   ? 'border-gray-100 bg-white'
                   : 'border-gray-100 bg-gray-50/50'
               }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Server className={`transition-colors duration-300 ${
-                      theme === 'apple' ? 'w-5 h-5 text-gray-900' : 'w-4 h-4 text-purple-600'
+                      theme === 'premium' ? 'w-4 h-4 sm:w-5 sm:h-5 text-gray-900' : 'w-4 h-4 text-purple-600'
                     }`} />
                     <h3 className={`font-semibold text-gray-900 transition-all duration-300 ${
-                      theme === 'apple' ? 'text-lg sm:text-xl' : 'text-sm sm:text-base'
+                      theme === 'premium' ? 'text-base sm:text-lg md:text-xl' : 'text-sm sm:text-base'
                     }`}>
                       AI Model Costs
                     </h3>
                   </div>
-                  {theme !== 'apple' && (
-                    <span className="text-xs text-gray-400 font-mono">const costs</span>
+                  {theme !== 'premium' && (
+                  <span className="text-xs text-gray-400 font-mono hidden sm:inline">const costs</span>
                   )}
                 </div>
               </div>
-              <div className={`p-4 sm:p-5 transition-all duration-300 ${
-                theme === 'apple' ? 'space-y-6' : ''
+              <div className={`p-4 sm:p-5 md:p-6 transition-all duration-300 ${
+                theme === 'premium' ? 'space-y-5 sm:space-y-6' : ''
               }`}>
                 <InputGroup 
                   theme={theme}
@@ -454,34 +538,34 @@ const ROICalculator = () => {
 
             {/* Section 3: Ad Configuration */}
             <div className={`bg-white rounded-xl border transition-all duration-300 ${
-              theme === 'apple'
-                ? 'border-gray-100 shadow-sm'
+              theme === 'premium'
+                ? 'border-gray-100 shadow-sm rounded-2xl'
                 : 'border-gray-200 shadow-sm'
             }`}>
-              <div className={`px-4 sm:px-5 py-3 sm:py-4 border-b transition-all duration-300 ${
-                theme === 'apple'
+              <div className={`px-4 sm:px-5 md:px-6 py-3 sm:py-4 md:py-5 border-b transition-all duration-300 ${
+                theme === 'premium'
                   ? 'border-gray-100 bg-white'
                   : 'border-gray-100 bg-gray-50/50'
               }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Zap className={`transition-colors duration-300 ${
-                      theme === 'apple' ? 'w-5 h-5 text-gray-900' : 'w-4 h-4 text-purple-600'
+                      theme === 'premium' ? 'w-4 h-4 sm:w-5 sm:h-5 text-gray-900' : 'w-4 h-4 text-purple-600'
                     }`} />
                     <h3 className={`font-semibold text-gray-900 transition-all duration-300 ${
-                      theme === 'apple' ? 'text-lg sm:text-xl' : 'text-sm sm:text-base'
+                      theme === 'premium' ? 'text-base sm:text-lg md:text-xl' : 'text-sm sm:text-base'
                     }`}>
                       Ad Settings
                     </h3>
                   </div>
-                  {theme !== 'apple' && (
-                    <span className="text-xs text-gray-400 font-mono">const ads</span>
+                  {theme !== 'premium' && (
+                  <span className="text-xs text-gray-400 font-mono hidden sm:inline">const ads</span>
                   )}
                 </div>
               </div>
               
-              <div className={`p-4 sm:p-5 transition-all duration-300 ${
-                theme === 'apple' ? 'space-y-6 sm:space-y-8' : 'space-y-4'
+              <div className={`p-4 sm:p-5 md:p-6 transition-all duration-300 ${
+                theme === 'premium' ? 'space-y-5 sm:space-y-6 md:space-y-8' : 'space-y-4'
               }`}>
                 <InputGroup 
                   theme={theme}
@@ -506,40 +590,40 @@ const ROICalculator = () => {
 
                 {/* Ad Type Selector */}
                 <div className={`pt-2 border-t transition-all duration-300 ${
-                  theme === 'apple' ? 'border-gray-200 pt-6' : 'border-gray-100 pt-2'
+                  theme === 'premium' ? 'border-gray-200 pt-6' : 'border-gray-100 pt-2'
                 }`}>
                   <label className={`mb-3 block flex items-center gap-1 transition-all duration-300 ${
-                    theme === 'apple' ? 'text-sm text-gray-900' : 'text-xs text-gray-600'
+                    theme === 'premium' ? 'text-sm text-gray-900' : 'text-xs text-gray-600'
                   }`}>
                     Ad Type
                     <HelpCircle className={`transition-all duration-300 ${
-                      theme === 'apple' ? 'w-4 h-4' : 'w-3 h-3'
+                      theme === 'premium' ? 'w-4 h-4' : 'w-3 h-3'
                     }`} />
                   </label>
                   <div className={`grid grid-cols-2 transition-all duration-300 ${
-                    theme === 'apple' ? 'gap-4 mb-6' : 'gap-2 mb-4'
+                    theme === 'premium' ? 'gap-3 sm:gap-4 mb-4 sm:mb-6' : 'gap-2 mb-4'
                   }`}>
                     <button
                       type="button"
                       onClick={() => setMonetization({...monetization, adType: 'CPM'})}
-                      className={`px-4 py-3 rounded-lg border-2 transition-all font-medium transition-all duration-300 ${
-                        theme === 'apple'
-                          ? `text-base ${
+                      className={`px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border-2 transition-all font-medium transition-all duration-300 ${
+                        theme === 'premium'
+                          ? `text-sm sm:text-base ${
                               monetization.adType === 'CPM'
                                 ? 'bg-gray-900 border-gray-900 text-white'
                                 : 'bg-white border-gray-200 text-gray-900 hover:border-gray-300'
                             }`
                           : `text-sm ${
-                              monetization.adType === 'CPM'
-                                ? 'bg-purple-50 border-purple-500 text-purple-700 shadow-sm'
-                                : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
+                        monetization.adType === 'CPM'
+                          ? 'bg-purple-50 border-purple-500 text-purple-700 shadow-sm'
+                          : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
                             }`
                       }`}
                     >
                       CPM
                       <span className={`block mt-1 font-normal transition-all duration-300 ${
-                        theme === 'apple'
-                          ? `text-sm ${
+                        theme === 'premium'
+                          ? `text-xs sm:text-sm ${
                               monetization.adType === 'CPM' ? 'text-gray-300' : 'text-gray-500'
                             }`
                           : 'text-xs text-gray-500'
@@ -550,24 +634,24 @@ const ROICalculator = () => {
                     <button
                       type="button"
                       onClick={() => setMonetization({...monetization, adType: 'CPC'})}
-                      className={`px-4 py-3 rounded-lg border-2 transition-all font-medium transition-all duration-300 ${
-                        theme === 'apple'
-                          ? `text-base ${
+                      className={`px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg border-2 transition-all font-medium transition-all duration-300 ${
+                        theme === 'premium'
+                          ? `text-sm sm:text-base ${
                               monetization.adType === 'CPC'
                                 ? 'bg-gray-900 border-gray-900 text-white'
                                 : 'bg-white border-gray-200 text-gray-900 hover:border-gray-300'
                             }`
                           : `text-sm ${
-                              monetization.adType === 'CPC'
-                                ? 'bg-purple-50 border-purple-500 text-purple-700 shadow-sm'
-                                : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
+                        monetization.adType === 'CPC'
+                          ? 'bg-purple-50 border-purple-500 text-purple-700 shadow-sm'
+                          : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300'
                             }`
                       }`}
                     >
                       CPC
                       <span className={`block mt-1 font-normal transition-all duration-300 ${
-                        theme === 'apple'
-                          ? `text-sm ${
+                        theme === 'premium'
+                          ? `text-xs sm:text-sm ${
                               monetization.adType === 'CPC' ? 'text-gray-300' : 'text-gray-500'
                             }`
                           : 'text-xs text-gray-500'
@@ -623,46 +707,46 @@ const ROICalculator = () => {
           {/* RIGHT: Results Sidebar - Sticky on Desktop */}
           <div className="lg:col-span-1">
             <div className={`lg:sticky lg:top-6 transition-all duration-300 ${
-              theme === 'apple' ? 'space-y-8 sm:space-y-10' : 'space-y-4 sm:space-y-6'
+              theme === 'premium' ? 'space-y-6 sm:space-y-8 md:space-y-10' : 'space-y-4 sm:space-y-6'
             }`}>
               
               {/* Visual Cost vs Revenue Bar */}
               <div className={`bg-white rounded-xl border transition-all duration-300 ${
-                theme === 'apple'
-                  ? 'border-gray-100 shadow-sm'
+                theme === 'premium'
+                  ? 'border-gray-100 shadow-sm rounded-2xl'
                   : 'border-gray-200 shadow-sm'
               }`}>
-                <div className={`px-4 sm:px-5 py-3 border-b transition-all duration-300 ${
-                  theme === 'apple'
+                <div className={`px-4 sm:px-5 md:px-6 py-3 sm:py-4 border-b transition-all duration-300 ${
+                  theme === 'premium'
                     ? 'border-gray-100 bg-white'
                     : 'border-gray-100 bg-gray-50/50'
                 }`}>
                   <h4 className={`font-semibold text-gray-900 transition-all duration-300 ${
-                    theme === 'apple' ? 'text-base sm:text-lg' : 'text-sm'
+                    theme === 'premium' ? 'text-sm sm:text-base md:text-lg' : 'text-sm'
                   }`}>
                     Cost vs Revenue
                   </h4>
                 </div>
-                <div className={`p-4 sm:p-5 transition-all duration-300 ${
-                  theme === 'apple' ? 'space-y-4' : 'space-y-3'
+                <div className={`p-4 sm:p-5 md:p-6 transition-all duration-300 ${
+                  theme === 'premium' ? 'space-y-3 sm:space-y-4' : 'space-y-3'
                 }`}>
                   <div>
                     <div className={`flex justify-between mb-1 transition-all duration-300 ${
-                      theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
+                      theme === 'premium' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
                     }`}>
                       <span>AI Costs</span>
                       <span className={`font-semibold transition-all duration-300 ${
-                        theme === 'apple' ? 'text-base' : ''
+                        theme === 'premium' ? 'text-base' : ''
                       }`}>
                         {fmtCurrency(results.inferenceCost)}
                       </span>
                     </div>
                     <div className={`w-full bg-gray-200 rounded-full overflow-hidden transition-all duration-300 ${
-                      theme === 'apple' ? 'h-3' : 'h-2.5'
+                      theme === 'premium' ? 'h-3' : 'h-2.5'
                     }`}>
                       <div 
                         className={`h-full transition-all duration-300 ${
-                          theme === 'apple' ? 'bg-gray-900' : 'bg-red-500'
+                          theme === 'premium' ? 'bg-gray-900' : 'bg-red-500'
                         }`}
                         style={{ width: `${Math.min(100, (results.inferenceCost / Math.max(results.totalRevenue, results.inferenceCost)) * 100)}%` }}
                       />
@@ -670,21 +754,21 @@ const ROICalculator = () => {
                   </div>
                   <div>
                     <div className={`flex justify-between mb-1 transition-all duration-300 ${
-                      theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
+                      theme === 'premium' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
                     }`}>
                       <span>Ad Revenue</span>
                       <span className={`font-semibold transition-all duration-300 ${
-                        theme === 'apple' ? 'text-base' : ''
+                        theme === 'premium' ? 'text-base' : ''
                       }`}>
                         {fmtCurrency(results.totalRevenue)}
                       </span>
                     </div>
                     <div className={`w-full bg-gray-200 rounded-full overflow-hidden transition-all duration-300 ${
-                      theme === 'apple' ? 'h-3' : 'h-2.5'
+                      theme === 'premium' ? 'h-3' : 'h-2.5'
                     }`}>
                       <div 
                         className={`h-full transition-all duration-300 ${
-                          theme === 'apple' 
+                          theme === 'premium' 
                             ? 'bg-gray-600' 
                             : 'bg-gradient-to-r from-purple-500 to-blue-500'
                         }`}
@@ -697,62 +781,62 @@ const ROICalculator = () => {
 
               {/* Per Conversation Metrics */}
               <div className={`bg-white rounded-xl border transition-all duration-300 ${
-                theme === 'apple'
-                  ? 'border-gray-100 shadow-sm'
+                theme === 'premium'
+                  ? 'border-gray-100 shadow-sm rounded-2xl'
                   : 'border-gray-200 shadow-sm'
               }`}>
-                <div className={`px-4 sm:px-5 py-3 border-b transition-all duration-300 ${
-                  theme === 'apple'
+                <div className={`px-4 sm:px-5 md:px-6 py-3 sm:py-4 border-b transition-all duration-300 ${
+                  theme === 'premium'
                     ? 'border-gray-100 bg-white'
                     : 'border-gray-100 bg-gray-50/50'
                 }`}>
                   <h4 className={`font-semibold text-gray-900 flex items-center gap-2 transition-all duration-300 ${
-                    theme === 'apple' ? 'text-base sm:text-lg' : 'text-sm'
+                    theme === 'premium' ? 'text-sm sm:text-base md:text-lg' : 'text-sm'
                   }`}>
                     <DollarSign className={`transition-colors duration-300 ${
-                      theme === 'apple' ? 'w-4 h-4 text-gray-900' : 'w-3 h-3 text-purple-600'
+                      theme === 'premium' ? 'w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-900' : 'w-3 h-3 text-purple-600'
                     }`} />
                     Per Conversation
                   </h4>
                 </div>
                 
-                <div className={`p-4 sm:p-5 transition-all duration-300 ${
-                  theme === 'apple' ? 'space-y-4' : 'space-y-3'
+                <div className={`p-4 sm:p-5 md:p-6 transition-all duration-300 ${
+                  theme === 'premium' ? 'space-y-3 sm:space-y-4' : 'space-y-3'
                 }`}>
                   <div className={`grid grid-cols-2 transition-all duration-300 ${
-                    theme === 'apple' ? 'gap-4' : 'gap-2'
+                    theme === 'premium' ? 'gap-3 sm:gap-4' : 'gap-2'
                   }`}>
-                    <div className={`rounded-lg p-2.5 border transition-all duration-300 ${
-                      theme === 'apple'
-                        ? 'bg-white border-gray-200 p-4'
-                        : 'bg-gray-50 border-gray-100'
+                    <div className={`rounded-lg border transition-all duration-300 ${
+                      theme === 'premium'
+                        ? 'bg-white border-gray-200 p-3 sm:p-4'
+                        : 'bg-gray-50 border-gray-100 p-2.5'
                     }`}>
                       <p className={`mb-1 transition-all duration-300 ${
-                        theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-500'
+                        theme === 'premium' ? 'text-xs sm:text-sm text-gray-600' : 'text-xs text-gray-500'
                       }`}>
                         Messages
                       </p>
                       <p className={`font-bold text-gray-900 transition-all duration-300 ${
-                        theme === 'apple' 
-                          ? 'text-lg font-sans' 
+                        theme === 'premium' 
+                          ? 'text-base sm:text-lg font-sans' 
                           : 'text-sm font-mono'
                       }`}>
                         {fmtNumWithCommas(results.perConvoMessages)}
                       </p>
                     </div>
-                    <div className={`rounded-lg p-2.5 border transition-all duration-300 ${
-                      theme === 'apple'
-                        ? 'bg-white border-gray-200 p-4'
-                        : 'bg-gray-50 border-gray-100'
+                    <div className={`rounded-lg border transition-all duration-300 ${
+                      theme === 'premium'
+                        ? 'bg-white border-gray-200 p-3 sm:p-4'
+                        : 'bg-gray-50 border-gray-100 p-2.5'
                     }`}>
                       <p className={`mb-1 transition-all duration-300 ${
-                        theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-500'
+                        theme === 'premium' ? 'text-xs sm:text-sm text-gray-600' : 'text-xs text-gray-500'
                       }`}>
                         Tokens
                       </p>
                       <p className={`font-bold text-gray-900 transition-all duration-300 ${
-                        theme === 'apple' 
-                          ? 'text-lg font-sans' 
+                        theme === 'premium' 
+                          ? 'text-base sm:text-lg font-sans' 
                           : 'text-sm font-mono'
                       }`}>
                         {fmtTokens(results.perConvoTokens)}
@@ -761,32 +845,32 @@ const ROICalculator = () => {
                   </div>
                   
                   <div className={`pt-2 border-t transition-all duration-300 ${
-                    theme === 'apple' ? 'border-gray-200 pt-4' : 'border-gray-100 pt-2'
+                    theme === 'premium' ? 'border-gray-200 pt-4' : 'border-gray-100 pt-2'
                   }`}>
                     <div className={`flex justify-between items-center transition-all duration-300 ${
-                      theme === 'apple' ? 'py-2' : 'py-1.5'
+                      theme === 'premium' ? 'py-2' : 'py-1.5'
                     }`}>
                       <span className={`transition-all duration-300 ${
-                        theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
+                        theme === 'premium' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
                       }`}>
                         Cost
                       </span>
                       <span className={`font-semibold text-gray-900 transition-all duration-300 ${
-                        theme === 'apple' ? 'text-base font-sans' : 'text-sm font-mono'
+                        theme === 'premium' ? 'text-base font-sans' : 'text-sm font-mono'
                       }`}>
                         {fmtCurrency(results.perConvoInferenceCost)}
                       </span>
                     </div>
                     <div className={`flex justify-between items-center transition-all duration-300 ${
-                      theme === 'apple' ? 'py-2' : 'py-1.5'
+                      theme === 'premium' ? 'py-2' : 'py-1.5'
                     }`}>
                       <span className={`transition-all duration-300 ${
-                        theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
+                        theme === 'premium' ? 'text-sm text-gray-600' : 'text-xs text-gray-600'
                       }`}>
                         Revenue
                       </span>
                       <span className={`font-semibold transition-all duration-300 ${
-                        theme === 'apple'
+                        theme === 'premium'
                           ? 'text-base font-sans text-gray-900'
                           : 'text-sm font-mono bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent'
                       }`}>
@@ -794,22 +878,22 @@ const ROICalculator = () => {
                       </span>
                     </div>
                     <div className={`flex justify-between items-center pt-2 border-t transition-all duration-300 ${
-                      theme === 'apple' ? 'border-gray-200 py-2' : 'border-gray-100 py-1.5'
+                      theme === 'premium' ? 'border-gray-200 py-2' : 'border-gray-100 py-1.5'
                     }`}>
                       <span className={`font-medium text-gray-900 transition-all duration-300 ${
-                        theme === 'apple' ? 'text-sm' : 'text-xs'
+                        theme === 'premium' ? 'text-sm' : 'text-xs'
                       }`}>
                         Net Profit
                       </span>
                       <span className={`font-bold transition-all duration-300 ${
-                        theme === 'apple'
+                        theme === 'premium'
                           ? `text-base font-sans ${
                               results.perConvoNetProfit > 0 ? 'text-gray-900' : 'text-gray-900'
                             }`
                           : `text-sm font-mono ${
-                              results.perConvoNetProfit > 0 
-                                ? 'bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent' 
-                                : 'text-red-600'
+                        results.perConvoNetProfit > 0 
+                          ? 'bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent' 
+                          : 'text-red-600'
                             }`
                       }`}>
                         {fmtCurrency(results.perConvoNetProfit)}
@@ -821,27 +905,27 @@ const ROICalculator = () => {
 
               {/* Contextual Insight */}
               <div className={`p-4 rounded-xl border flex gap-2 transition-all duration-300 ${
-                theme === 'apple'
+                theme === 'premium'
                   ? `text-sm ${
                       results.netProfit > 0 
                         ? 'bg-gray-50 border-gray-200 text-gray-900' 
                         : 'bg-gray-50 border-gray-200 text-gray-900'
                     }`
                   : `text-xs ${
-                      results.netProfit > 0 
-                        ? 'bg-purple-50 border-purple-200 text-purple-900' 
-                        : 'bg-amber-50 border-amber-200 text-amber-900'
+                results.netProfit > 0 
+                  ? 'bg-purple-50 border-purple-200 text-purple-900' 
+                  : 'bg-amber-50 border-amber-200 text-amber-900'
                     }`
               }`}>
                 {results.netProfit > 0 ? (
                   <CheckCircle2 className={`flex-shrink-0 mt-0.5 transition-colors duration-300 ${
-                    theme === 'apple' 
+                    theme === 'premium' 
                       ? 'w-5 h-5 text-gray-900' 
                       : 'w-4 h-4 text-purple-600'
                   }`} />
                 ) : (
                   <AlertCircle className={`flex-shrink-0 mt-0.5 transition-colors duration-300 ${
-                    theme === 'apple' 
+                    theme === 'premium' 
                       ? 'w-5 h-5 text-gray-900' 
                       : 'w-4 h-4 text-amber-600'
                   }`} />
@@ -854,13 +938,13 @@ const ROICalculator = () => {
               </div>
 
               {/* Developer Footer Note */}
-              {theme !== 'apple' && (
-                <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-500 font-mono">
-                  <div className="flex items-center gap-2">
-                    <Code2 className="w-3 h-3 text-purple-600" />
-                    <span>// Real-time calculations • API-ready metrics</span>
-                  </div>
+              {theme !== 'premium' && (
+              <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-500 font-mono">
+                <div className="flex items-center gap-2">
+                  <Code2 className="w-3 h-3 text-purple-600" />
+                  <span>// Real-time calculations • API-ready metrics</span>
                 </div>
+              </div>
               )}
             </div>
           </div>
@@ -904,14 +988,14 @@ const InputGroup = ({ label, value, onChange, min, max, step = 1, unit, isCurren
 
   return (
     <div className={`flex flex-col transition-all duration-300 ${
-      theme === 'apple' ? 'gap-4' : 'gap-2'
+      theme === 'premium' ? 'gap-3 sm:gap-4' : 'gap-2'
     }`}>
       <div className={`flex justify-between items-center transition-all duration-300 ${
-        theme === 'apple' ? 'mb-2' : 'mb-1'
+        theme === 'premium' ? 'mb-1 sm:mb-2' : 'mb-1'
       }`}>
         <div className="flex items-center gap-1.5 flex-1 min-w-0">
           <span className={`truncate transition-all duration-300 ${
-            theme === 'apple' ? 'text-base text-gray-900' : 'text-xs text-gray-600'
+            theme === 'premium' ? 'text-sm sm:text-base text-gray-900' : 'text-xs text-gray-600'
           }`}>
             {label}
           </span>
@@ -919,8 +1003,8 @@ const InputGroup = ({ label, value, onChange, min, max, step = 1, unit, isCurren
             <div className="relative flex-shrink-0">
               <HelpCircle 
                 className={`cursor-help transition-colors touch-manipulation ${
-                  theme === 'apple'
-                    ? 'w-4 h-4 text-gray-400 hover:text-gray-900'
+                  theme === 'premium'
+                    ? 'w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 hover:text-gray-900'
                     : 'w-3.5 h-3.5 text-gray-400 hover:text-purple-600'
                 }`}
                 onMouseEnter={() => setShowTooltip(true)}
@@ -928,9 +1012,9 @@ const InputGroup = ({ label, value, onChange, min, max, step = 1, unit, isCurren
                 onTouchStart={() => setShowTooltip(!showTooltip)}
               />
               {showTooltip && (
-                <div className={`absolute left-0 bottom-full mb-2 w-56 sm:w-64 p-2 rounded-lg shadow-xl border z-50 transition-all duration-300 ${
-                  theme === 'apple'
-                    ? 'bg-white text-gray-900 border-gray-200 text-sm'
+                <div className={`absolute left-0 bottom-full mb-2 w-56 sm:w-64 md:w-72 p-2 rounded-lg shadow-xl border z-50 transition-all duration-300 ${
+                  theme === 'premium'
+                    ? 'bg-white text-gray-900 border-gray-200 text-xs sm:text-sm'
                     : 'bg-gray-900 text-xs text-white border-gray-700'
                 }`}>
                   {tooltip}
@@ -949,14 +1033,14 @@ const InputGroup = ({ label, value, onChange, min, max, step = 1, unit, isCurren
             max={max}
             step={step}
             className={`px-2 bg-white border rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent touch-manipulation transition-all duration-300 ${
-              theme === 'apple'
-                ? 'w-24 sm:w-28 py-2 border-gray-300 text-base font-sans focus:ring-gray-900'
+              theme === 'premium'
+                ? 'w-20 sm:w-24 md:w-28 py-1.5 sm:py-2 border-gray-300 text-sm sm:text-base font-sans focus:ring-gray-900'
                 : 'w-20 sm:w-24 py-1.5 sm:py-1 border-gray-300 text-sm font-mono focus:ring-purple-500'
             }`}
           />
           {!isCurrency && unit && (
             <span className={`hidden sm:inline transition-all duration-300 ${
-              theme === 'apple' ? 'text-sm text-gray-600' : 'text-xs text-gray-500'
+              theme === 'premium' ? 'text-xs sm:text-sm text-gray-600' : 'text-xs text-gray-500'
             }`}>
               {unit}
             </span>
@@ -976,7 +1060,7 @@ const InputGroup = ({ label, value, onChange, min, max, step = 1, unit, isCurren
           setInputValue(newValue.toString());
         }}
         className={`w-full bg-gray-200 rounded-lg appearance-none cursor-pointer transition-all touch-manipulation ${
-          theme === 'apple'
+          theme === 'premium'
             ? 'h-2 accent-gray-900 hover:accent-gray-700'
             : 'h-2.5 sm:h-2 accent-purple-600 hover:accent-purple-700'
         }`}
@@ -985,7 +1069,7 @@ const InputGroup = ({ label, value, onChange, min, max, step = 1, unit, isCurren
       
       {presetValues && presetValues.length > 0 && (
         <div className={`flex flex-wrap transition-all duration-300 mt-2 ${
-          theme === 'apple' ? 'gap-3' : 'gap-1.5 sm:gap-2'
+          theme === 'premium' ? 'gap-2 sm:gap-3' : 'gap-1.5 sm:gap-2'
         }`}>
           {presetValues.map((preset) => (
             <button
@@ -995,16 +1079,16 @@ const InputGroup = ({ label, value, onChange, min, max, step = 1, unit, isCurren
                 setInputValue(preset.toString());
               }}
               className={`rounded-lg border transition-all touch-manipulation ${
-                theme === 'apple'
-                  ? `px-4 py-2 text-sm min-h-[40px] ${
+                theme === 'premium'
+                  ? `px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm min-h-[36px] sm:min-h-[40px] ${
                       Math.abs(value - preset) < step / 2
                         ? 'bg-gray-900 border-gray-900 text-white'
                         : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400'
                     }`
                   : `px-2.5 sm:px-2 py-1.5 sm:py-0.5 text-xs min-h-[32px] sm:min-h-0 ${
-                      Math.abs(value - preset) < step / 2
-                        ? 'bg-purple-100 border-purple-500 text-purple-700'
-                        : 'bg-white border-gray-300 text-gray-600 hover:border-purple-500 hover:text-purple-600 active:bg-purple-50'
+                Math.abs(value - preset) < step / 2
+                  ? 'bg-purple-100 border-purple-500 text-purple-700'
+                  : 'bg-white border-gray-300 text-gray-600 hover:border-purple-500 hover:text-purple-600 active:bg-purple-50'
                     }`
               }`}
             >
