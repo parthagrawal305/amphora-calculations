@@ -23,3 +23,7 @@ Defaults come from a real case study. Everything runs client-side — it's just 
 Fed the Solveeit.ai case study PDF to Gemini and asked for a React calculator with the right defaults. Got a working prototype, then iterated on the UX in Cursor — making the hero section show net profit prominently, adding a premium theme with glassmorphism, and handling responsive stat layouts (there's a `useRef` that measures actual rendered width to decide when to stack vs. grid).
 
 Has two themes: a developer-focused one with monospace fonts and code comments, and a premium one with animated gradients and Framer Motion scroll animations.
+
+---
+
+<sub>README generated with AI ✨</sub>
